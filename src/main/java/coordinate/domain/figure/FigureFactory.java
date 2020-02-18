@@ -1,6 +1,7 @@
 package coordinate.domain.figure;
 
 import coordinate.domain.Point;
+import coordinate.exception.InvalidFigureException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,10 +28,10 @@ public enum FigureFactory {
                 .orElseThrow(() -> new IllegalArgumentException());
     }
 
-    public static Figure getFigure(List<Point> points) {
+    public static Figure getFigure(List<Point> points) throws InvalidFigureException {
         FigureCreator figureCreator = FigureFactory.of(points.size());
         if (figureCreator == null) {
-            throw new IllegalArgumentException("유효하지 않은 도형입니다.");
+            throw new InvalidFigureException("유효하지 않은 도형입니다.");
         }
         return figureCreator.create(points);
     }

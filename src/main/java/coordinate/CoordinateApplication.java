@@ -9,8 +9,12 @@ import java.util.List;
 
 public class CoordinateApplication {
     public static void main(String[] args) {
-        String value = InputView.getPoint();
-        List<Point> points = PointParser.parse(value);
-        FigureFactory.getFigure(points);
+        try {
+            String value = InputView.getPoint();
+            List<Point> points = PointParser.parse(value);
+            FigureFactory.getFigure(points);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
