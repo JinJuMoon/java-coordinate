@@ -2,21 +2,33 @@ package coordinate.domain.figure;
 
 import coordinate.domain.Point;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
-public class FigureFactory {
-    private static Map<Integer, FigureCreator> creators = new HashMap<>();
+public enum FigureFactory {
+    LINE_CREATOR(2, new LineCreator()),
+    TRIANGLE_CREATOR(3, new TriangleCreator()),
+    RECTANGLE_CREATOR(4, new RectangleCreator());
 
-    static {
-        creators.put(2, new LineCreator());
-        creators.put(3, new TriangleCreator());
-        creators.put(4, new RectangleCreator());
+    private int sizeOfPoints;
+    private FigureCreator figureCreator;
+
+
+    FigureFactory(int sizeOfPoints, FigureCreator figureCreator) {
+        this.sizeOfPoints = sizeOfPoints;
+        this.figureCreator = figureCreator;
+    }
+
+    public static FigureCreator of(int sizeOfPoints) {
+        return Arrays.stream(values())
+                .filter(f -> f.sizeOfPoints == sizeOfPoints)
+                .map(figureFactory -> figureFactory.figureCreator)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException());
     }
 
     public static Figure getFigure(List<Point> points) {
-        FigureCreator figureCreator = creators.get(points.size());
+        FigureCreator figureCreator = FigureFactory.of(points.size());
         if (figureCreator == null) {
             throw new IllegalArgumentException("유효하지 않은 도형입니다.");
         }
