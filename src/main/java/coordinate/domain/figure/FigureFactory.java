@@ -20,7 +20,7 @@ public enum FigureFactory {
         this.figureCreator = figureCreator;
     }
 
-    public static FigureCreator of(int sizeOfPoints) {
+    public static FigureCreator generateFigureCreator(int sizeOfPoints) {
         return Arrays.stream(values())
                 .filter(f -> f.sizeOfPoints == sizeOfPoints)
                 .map(figureFactory -> figureFactory.figureCreator)
@@ -29,7 +29,7 @@ public enum FigureFactory {
     }
 
     public static Figure getFigure(List<Point> points) throws InvalidFigureException {
-        FigureCreator figureCreator = FigureFactory.of(points.size());
+        FigureCreator figureCreator = FigureFactory.generateFigureCreator(points.size());
         if (figureCreator == null) {
             throw new InvalidFigureException("유효하지 않은 도형입니다.");
         }
